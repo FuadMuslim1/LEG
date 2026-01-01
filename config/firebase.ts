@@ -17,7 +17,7 @@ import {
   enableIndexedDbPersistence, 
   serverTimestamp 
 } from 'firebase/firestore';
-import { UserRole, UserProfile } from './types';
+import { UserRole, UserProfile } from '../types';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDc24eHGwIFcltfsYOwuhig8whHQuhfJ7U",
