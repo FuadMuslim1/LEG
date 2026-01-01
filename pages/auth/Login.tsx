@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginWithCredentials, sendResetPasswordEmail } from '../firebase';
-import { UserRole } from '../types';
+import { loginWithCredentials, sendResetPasswordEmail } from '../../config/firebase';
+import { UserRole } from '../../types';
 import { Loader2, Eye, EyeOff, Clock, ArrowLeft } from 'lucide-react';
 
 export const Login: React.FC = () => {

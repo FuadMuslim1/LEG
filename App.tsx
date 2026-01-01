@@ -1,19 +1,19 @@
 
 import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { db, auth } from './firebase'; 
+import { db, auth } from './config/firebase';
 import { doc, onSnapshot, Unsubscribe, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { AuthState, UserRole } from './types';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
+import { Login } from './pages/auth/Login';
+import { Register } from './pages/auth/Register';
 import { Loader2, MonitorX, RefreshCw } from 'lucide-react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Homepage from './pages/Homepage';
 
 // LAZY LOADING: Import Pages only when needed
-const UserDashboard = React.lazy(() => import('./pages/dashboard/UserDashboard').then(m => ({ default: m.UserDashboard })));
-const ProfileSettings = React.lazy(() => import('./pages/dashboard/ProfileSettings').then(m => ({ default: m.ProfileSettings })));
+const UserDashboard = React.lazy(() => import('./pages/user/UserDashboard').then(m => ({ default: m.UserDashboard })));
+const ProfileSettings = React.lazy(() => import('./pages/user/ProfileSettings').then(m => ({ default: m.ProfileSettings })));
 
 const AdminReferral = React.lazy(() => import('./pages/admin/AdminReferral').then(m => ({ default: m.AdminReferral })));
 const AdminDatabase = React.lazy(() => import('./pages/admin/AdminDatabase').then(m => ({ default: m.AdminDatabase })));
@@ -165,9 +165,6 @@ const App: React.FC = () => {
             
             {/* User Routes */}
             <Route path="/dashboard" element={<ProtectedRoute><UserDashboard user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/subject" element={<ProtectedRoute><Subject user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/materials/:subject" element={<ProtectedRoute><MaterialList user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/pronunciation" element={<ProtectedRoute><Pronunciation user={authState.user!} /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><ProfileSettings user={authState.user!} /></ProtectedRoute>} />
 
             {/* Admin Routes */}
