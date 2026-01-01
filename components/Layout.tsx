@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { UserProfile } from '../types';
-import { logout, db } from '../firebase';
+import { logout, db } from '../config/firebase';
 import { 
   Menu, X, LogOut, LayoutDashboard, Bell, BookOpen, 
   TrendingUp, Gift, ExternalLink, ChevronRight, Coins, Smartphone,
