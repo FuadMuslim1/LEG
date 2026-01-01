@@ -1,2 +1,9 @@
-Ketidakkonsistenan Filter Notifikasi (Layout.tsx) - FIXED
-Di Layout.tsx, query untuk notifikasi broadcast telah diperbarui untuk menggunakan operator 'in' dengan targets ['ALL', user.level] jika user.level adalah 'PREMIUM' atau 'FREE'. Ini memastikan user menerima notifikasi yang ditargetkan untuk level mereka.
+# TODO: Hapus Admin Content
+
+## Langkah-langkah penghapusan admin content:
+
+- [ ] Hapus ADMIN_CONTENT dari types.ts
+- [ ] Hapus kode admin content dari Login.tsx (switch case dan datalist email)
+- [ ] Hapus file pages/admin/AdminContent.tsx
+- [ ] Hapus kode admin content dari App.tsx (import lazy, pengecekan email, assignment role, case getHomeRoute, route admin content)
+- [x] Test app untuk memastikan admin lain masih berfungsi dan app berjalan lancar
