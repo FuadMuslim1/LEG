@@ -12,11 +12,11 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import Homepage from './pages/Homepage';
 
 // LAZY LOADING: Import Pages only when needed
-const UserDashboard = React.lazy(() => import('./pages/UserDashboard').then(m => ({ default: m.UserDashboard })));
+const UserDashboard = React.lazy(() => import('./pages/dashboard/UserDashboard').then(m => ({ default: m.UserDashboard })));
 const Subject = React.lazy(() => import('./pages/Subject').then(m => ({ default: m.Subject })));
 const MaterialList = React.lazy(() => import('./pages/MaterialList').then(m => ({ default: m.MaterialList })));
 const Pronunciation = React.lazy(() => import('./pages/Pronunciation').then(m => ({ default: m.Pronunciation })));
-const ProfileSettings = React.lazy(() => import('./pages/ProfileSettings').then(m => ({ default: m.ProfileSettings })));
+const ProfileSettings = React.lazy(() => import('./pages/dashboard/ProfileSettings').then(m => ({ default: m.ProfileSettings })));
 
 const AdminReferral = React.lazy(() => import('./pages/admin/AdminReferral').then(m => ({ default: m.AdminReferral })));
 const AdminDatabase = React.lazy(() => import('./pages/admin/AdminDatabase').then(m => ({ default: m.AdminDatabase })));

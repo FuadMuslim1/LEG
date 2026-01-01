@@ -87,10 +87,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, user, title 
   return (
     <div className={`min-h-screen flex font-sans ${isLord ? 'bg-slate-950' : 'bg-slate-100'}`}>
       {/* Mobile Sidebar Overlay */}
-      {!isSidebarOpen && (
-        <div 
+      {isSidebarOpen && (
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={() => setIsSidebarOpen(true)}
+          onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
@@ -141,7 +141,12 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, user, title 
         {/* Top Header */}
         <header className={`h-16 border-b flex items-center justify-between px-6 sticky top-0 z-30 ${isLord ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-slate-500 hover:bg-slate-800 p-2 rounded-lg lg:hidden">
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="text-slate-500 hover:bg-slate-800 p-2 rounded-lg lg:hidden"
+              aria-label="Toggle Sidebar"
+              title="Toggle Sidebar"
+            >
               <Menu size={20} />
             </button>
             <h1 className={`text-lg font-bold ${isLord ? 'text-amber-500' : 'text-slate-800'}`}>{title}</h1>
