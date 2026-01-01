@@ -33,8 +33,8 @@ export const UserDashboard: React.FC<Props> = ({ user }) => {
              Akses semua fitur pembelajaran melalui menu di <strong>Sidebar</strong>. 
              Mulai dari latihan, cek progress, hingga klaim hadiah.
            </p>
-           <button 
-             onClick={() => navigate('/subject')}
+           <button
+             onClick={() => navigate('/dashboard')}
              className="bg-white text-indigo-600 px-6 py-3 rounded-xl font-bold hover:bg-indigo-50 transition-colors inline-flex items-center gap-2 shadow-lg"
            >
              Mulai Belajar
