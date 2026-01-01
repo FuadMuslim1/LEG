@@ -1,23 +1,19 @@
 
 import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { db, auth } from './firebase'; 
+import { db, auth } from './config/firebase'; 
 import { doc, onSnapshot, Unsubscribe, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
-import { AuthState, UserRole } from './types';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
+import { AuthState, UserRole, UserProfile } from './types';
+import { Login } from './pages/auth/Login';
+import { Register } from './pages/auth/Register';
 import { Loader2, MonitorX, RefreshCw } from 'lucide-react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Homepage from './pages/Homepage';
 
 // LAZY LOADING: Import Pages only when needed
-const UserDashboard = React.lazy(() => import('./pages/UserDashboard').then(m => ({ default: m.UserDashboard })));
-const Subject = React.lazy(() => import('./pages/Subject').then(m => ({ default: m.Subject })));
-const MaterialList = React.lazy(() => import('./pages/MaterialList').then(m => ({ default: m.MaterialList })));
-const Pronunciation = React.lazy(() => import('./pages/Pronunciation').then(m => ({ default: m.Pronunciation })));
-const ProfileSettings = React.lazy(() => import('./pages/ProfileSettings').then(m => ({ default: m.ProfileSettings })));
-
+const UserDashboard = React.lazy(() => import('./pages/user/UserDashboard').then(m => ({ default: m.UserDashboard })));
+const ProfileSettings = React.lazy(() => import('./pages/user/ProfileSettings').then(m => ({ default: m.ProfileSettings })));
 const AdminReferral = React.lazy(() => import('./pages/admin/AdminReferral').then(m => ({ default: m.AdminReferral })));
 const AdminDatabase = React.lazy(() => import('./pages/admin/AdminDatabase').then(m => ({ default: m.AdminDatabase })));
 const AdminReward = React.lazy(() => import('./pages/admin/AdminReward').then(m => ({ default: m.AdminReward })));
@@ -29,6 +25,27 @@ const LoadingScreen = () => (
     <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
   </div>
 );
+
+const getHomeRoute = (role: UserRole) => {
+  switch (role) {
+    case UserRole.ADMIN_LORD: return '/admin/lord';
+    case UserRole.ADMIN_REFERRAL: return '/admin/referral';
+    case UserRole.ADMIN_DATABASE: return '/admin/database';
+    case UserRole.ADMIN_REWARD: return '/admin/reward';
+    case UserRole.ADMIN_NOTIFICATION: return '/admin/notification';
+    case UserRole.USER: default: return '/dashboard';
+  }
+};
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode, allowedRoles?: UserRole[], user: UserProfile | null }> = ({ children, allowedRoles, user }) => {
+  if (!user) return <Navigate to="/" />;
+  if (allowedRoles) {
+    const userRole = user.role;
+    const isAllowed = allowedRoles.includes(userRole) || userRole === UserRole.ADMIN_LORD;
+    if (!isAllowed) return <Navigate to={getHomeRoute(userRole)} />; 
+  }
+  return <>{children}</>;
+};
 
 const App: React.FC = () => {
   const SESSION_ID = useRef(`sess_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`).current;
@@ -117,17 +134,6 @@ const App: React.FC = () => {
     return () => { unsubscribeAuth(); if (unsubscribeSnapshot) unsubscribeSnapshot(); };
   }, []);
 
-  const getHomeRoute = (role: UserRole) => {
-    switch (role) {
-      case UserRole.ADMIN_LORD: return '/admin/lord';
-      case UserRole.ADMIN_REFERRAL: return '/admin/referral';
-      case UserRole.ADMIN_DATABASE: return '/admin/database';
-      case UserRole.ADMIN_REWARD: return '/admin/reward';
-      case UserRole.ADMIN_NOTIFICATION: return '/admin/notification';
-      case UserRole.USER: default: return '/dashboard';
-    }
-  };
-
   if (isMultiSession) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-900 text-white p-6 text-center animate-in fade-in duration-500">
@@ -147,16 +153,6 @@ const App: React.FC = () => {
 
   if (authState.loading) return <LoadingScreen />;
 
-  const ProtectedRoute: React.FC<{ children: React.ReactNode, allowedRoles?: UserRole[] }> = ({ children, allowedRoles }) => {
-    if (!authState.user) return <Navigate to="/" />;
-    if (allowedRoles) {
-      const userRole = authState.user.role;
-      const isAllowed = allowedRoles.includes(userRole) || userRole === UserRole.ADMIN_LORD;
-      if (!isAllowed) return <Navigate to={getHomeRoute(userRole)} />; 
-    }
-    return <>{children}</>;
-  };
-
   return (
     <ErrorBoundary>
       <HashRouter>
@@ -167,18 +163,15 @@ const App: React.FC = () => {
             <Route path="/register" element={authState.user ? <Navigate to={getHomeRoute(authState.user.role)} replace /> : <Register />} />
             
             {/* User Routes */}
-            <Route path="/dashboard" element={<ProtectedRoute><UserDashboard user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/subject" element={<ProtectedRoute><Subject user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/materials/:subject" element={<ProtectedRoute><MaterialList user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/pronunciation" element={<ProtectedRoute><Pronunciation user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute><ProfileSettings user={authState.user!} /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute user={authState.user}><UserDashboard user={authState.user!} /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute user={authState.user}><ProfileSettings user={authState.user!} /></ProtectedRoute>} />
 
             {/* Admin Routes */}
-            <Route path="/admin/lord" element={<ProtectedRoute allowedRoles={[UserRole.ADMIN_LORD]}><AdminLord user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/admin/referral" element={<ProtectedRoute allowedRoles={[UserRole.ADMIN_REFERRAL]}><AdminReferral user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/admin/database" element={<ProtectedRoute allowedRoles={[UserRole.ADMIN_DATABASE]}><AdminDatabase user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/admin/reward" element={<ProtectedRoute allowedRoles={[UserRole.ADMIN_REWARD]}><AdminReward user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/admin/notification" element={<ProtectedRoute allowedRoles={[UserRole.ADMIN_NOTIFICATION]}><AdminNotification user={authState.user!} /></ProtectedRoute>} />
+            <Route path="/admin/lord" element={<ProtectedRoute user={authState.user} allowedRoles={[UserRole.ADMIN_LORD]}><AdminLord user={authState.user!} /></ProtectedRoute>} />
+            <Route path="/admin/referral" element={<ProtectedRoute user={authState.user} allowedRoles={[UserRole.ADMIN_REFERRAL]}><AdminReferral user={authState.user!} /></ProtectedRoute>} />
+            <Route path="/admin/database" element={<ProtectedRoute user={authState.user} allowedRoles={[UserRole.ADMIN_DATABASE]}><AdminDatabase user={authState.user!} /></ProtectedRoute>} />
+            <Route path="/admin/reward" element={<ProtectedRoute user={authState.user} allowedRoles={[UserRole.ADMIN_REWARD]}><AdminReward user={authState.user!} /></ProtectedRoute>} />
+            <Route path="/admin/notification" element={<ProtectedRoute user={authState.user} allowedRoles={[UserRole.ADMIN_NOTIFICATION]}><AdminNotification user={authState.user!} /></ProtectedRoute>} />
           </Routes>
         </Suspense>
       </HashRouter>

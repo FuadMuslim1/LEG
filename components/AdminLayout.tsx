@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { UserProfile, UserRole } from '../types';
-import { logout } from '../firebase';
+import { logout } from '../config/firebase';
 import { 
   Menu, X, LogOut, LayoutDashboard, Database, 
   Gift, Bell, Users, Shield, ChevronRight, Crown,
@@ -73,10 +73,6 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, user, title 
           <NavItem icon={Database} label="Master Database" path="/admin/database" />
         )}
         
-        {(role === UserRole.ADMIN_CONTENT || isLord) && (
-          <NavItem icon={BookOpen} label="Content Manager" path="/admin/content" />
-        )}
-
         {(role === UserRole.ADMIN_REWARD || isLord) && (
           <NavItem icon={Gift} label="Reward Inventory" path="/admin/reward" />
         )}

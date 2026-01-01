@@ -1,6 +1,6 @@
 import React from 'react';
-import { Layout } from '../components/Layout';
-import { UserProfile } from '../types';
+import { Layout } from '../../components/Layout';
+import { UserProfile } from '../../types';
 import { TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 

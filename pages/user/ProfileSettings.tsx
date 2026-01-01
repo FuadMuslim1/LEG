@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
-import { Layout } from '../components/Layout';
-import { UserProfile } from '../types';
+import { Layout } from '../../components/Layout';
+import { UserProfile } from '../../types';
 import { updatePassword, updateProfile } from 'firebase/auth';
-import { auth, db } from '../firebase';
+import { auth, db } from '../../config/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { User, Lock, Save, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 

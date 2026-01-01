@@ -17,7 +17,7 @@ import {
   enableIndexedDbPersistence, 
   serverTimestamp 
 } from 'firebase/firestore';
-import { UserRole, UserProfile } from './types';
+import { UserRole, UserProfile } from '../types';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDc24eHGwIFcltfsYOwuhig8whHQuhfJ7U",
@@ -105,7 +105,6 @@ export const loginWithCredentials = async (email: string, password: string): Pro
       else if (rawRole === 'adminDatabase') role = UserRole.ADMIN_DATABASE;
       else if (rawRole === 'adminReward') role = UserRole.ADMIN_REWARD;
       else if (rawRole === 'adminNotification') role = UserRole.ADMIN_NOTIFICATION;
-      else if (rawRole === 'adminContent') role = UserRole.ADMIN_CONTENT;
       else if (rawRole === 'adminLord') role = UserRole.ADMIN_LORD;
       else if (rawRole === 'admin') role = UserRole.ADMIN_DATABASE;
 
@@ -152,16 +151,7 @@ export const loginWithCredentials = async (email: string, password: string): Pro
             role: UserRole.ADMIN_NOTIFICATION,
             createdAt: new Date(),
          };
-      }
-      if (normalizedEmail === 'admincontentgeuwat@email.com') {
-         return {
-            uid: user.uid,
-            email: normalizedEmail,
-            displayName: "Content Manager",
-            photoURL: null,
-            role: UserRole.ADMIN_CONTENT,
-            createdAt: new Date(),
-         };
+     
       }
       // THE LORD ADMIN BOOTSTRAP
       if (normalizedEmail === 'adminlordgeuwat@email.com') {
