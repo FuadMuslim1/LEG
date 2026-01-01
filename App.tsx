@@ -1,4 +1,4 @@
-
+import './App.css';
 import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { db, auth } from './config/firebase'; 
@@ -20,13 +20,15 @@ const AdminReward = React.lazy(() => import('./pages/admin/AdminReward').then(m 
 const AdminNotification = React.lazy(() => import('./pages/admin/AdminNotification').then(m => ({ default: m.AdminNotification })));
 const AdminLord = React.lazy(() => import('./pages/admin/AdminLord').then(m => ({ default: m.AdminLord })));
 
-import './App.css';
 
-const LoadingScreen = () => (
-  <div className="loading-container">
-    <Loader2 className="loader-icon" />
-  </div>
-);
+
+function LoadingScreen() {
+  return (
+    <div className="loading-container">
+      <Loader2 className="loader-icon" />
+    </div>
+  );
+}
 
 const getHomeRoute = (role: UserRole) => {
   switch (role) {
