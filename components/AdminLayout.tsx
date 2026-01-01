@@ -72,10 +72,6 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, user, title 
         {(role === UserRole.ADMIN_DATABASE || isLord) && (
           <NavItem icon={Database} label="Master Database" path="/admin/database" />
         )}
-        
-        {(role === UserRole.ADMIN_CONTENT || isLord) && (
-          <NavItem icon={BookOpen} label="Content Manager" path="/admin/content" />
-        )}
 
         {(role === UserRole.ADMIN_REWARD || isLord) && (
           <NavItem icon={Gift} label="Reward Inventory" path="/admin/reward" />
