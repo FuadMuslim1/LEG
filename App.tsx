@@ -20,9 +20,11 @@ const AdminReward = React.lazy(() => import('./pages/admin/AdminReward').then(m 
 const AdminNotification = React.lazy(() => import('./pages/admin/AdminNotification').then(m => ({ default: m.AdminNotification })));
 const AdminLord = React.lazy(() => import('./pages/admin/AdminLord').then(m => ({ default: m.AdminLord })));
 
+import './App.css';
+
 const LoadingScreen = () => (
-  <div className="min-h-screen flex items-center justify-center bg-slate-50">
-    <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+  <div className="loading-container">
+    <Loader2 className="loader-icon" />
   </div>
 );
 

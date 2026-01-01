@@ -1,0 +1,20 @@
+/* App.css */
+.loading-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc; /* bg-slate-50 */
+}
+
+.loader-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #4f46e5; /* text-indigo-600 */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
