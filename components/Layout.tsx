@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { UserProfile } from '../types';
-import { logout, db } from '../firebase';
+import { logout, db } from '../config/firebase';
 import { 
   Menu, X, LogOut, LayoutDashboard, Bell, BookOpen, 
   TrendingUp, Gift, ExternalLink, ChevronRight, Coins, Smartphone,
   HelpCircle, ArrowLeft, Settings
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { collection, query, where, onSnapshot, limit } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, limit, in } from 'firebase/firestore';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -63,9 +63,15 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
   useEffect(() => {
     if (!user || !user.email) return;
 
+    // Determine targets based on user level
+    const targets = ['ALL'];
+    if (user.level === 'PREMIUM' || user.level === 'FREE') {
+      targets.push(user.level);
+    }
+
     const qBroadcast = query(
         collection(db, 'admin_notification'),
-        where('target', '==', 'ALL'),
+        where('target', 'in', targets),
         limit(5)
     );
 
