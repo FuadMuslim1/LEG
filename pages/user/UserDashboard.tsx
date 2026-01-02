@@ -34,7 +34,7 @@ export const UserDashboard: React.FC<Props> = ({ user }) => {
              Mulai dari latihan, cek progress, hingga klaim hadiah.
            </p>
            <button 
-             onClick={() => navigate('/subject')}
+             onClick={() => navigate('../Skill')}
              className="bg-white text-indigo-600 px-6 py-3 rounded-xl font-bold hover:bg-indigo-50 transition-colors inline-flex items-center gap-2 shadow-lg"
            >
              Mulai Belajar
@@ -45,9 +45,6 @@ export const UserDashboard: React.FC<Props> = ({ user }) => {
          <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-indigo-400 rounded-full opacity-30 blur-2xl"></div>
       </div>
 
-      <div className="mt-12 text-center text-slate-400 text-xs">
-        <p>© 2025 English Learning Geuwat</p>
-      </div>
 
     </Layout>
   );

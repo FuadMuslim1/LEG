@@ -11,6 +11,7 @@ import { Loader2, MonitorX, RefreshCw } from 'lucide-react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Homepage from './pages/Homepage';
 
+
 // LAZY LOADING: Import Pages only when needed
 const UserDashboard = React.lazy(() => import('./pages/user/UserDashboard').then(m => ({ default: m.UserDashboard })));
 const ProfileSettings = React.lazy(() => import('./pages/user/ProfileSettings').then(m => ({ default: m.ProfileSettings })));
@@ -19,7 +20,8 @@ const AdminDatabase = React.lazy(() => import('./pages/admin/AdminDatabase').the
 const AdminReward = React.lazy(() => import('./pages/admin/AdminReward').then(m => ({ default: m.AdminReward })));
 const AdminNotification = React.lazy(() => import('./pages/admin/AdminNotification').then(m => ({ default: m.AdminNotification })));
 const AdminLord = React.lazy(() => import('./pages/admin/AdminLord').then(m => ({ default: m.AdminLord })));
-
+const Skill = React.lazy(() => import('./pages/Skill').then(m => ({ default: m.Skill })));
+    
 
 const getHomeRoute = (role: UserRole) => {
   switch (role) {
@@ -160,7 +162,8 @@ const App: React.FC = () => {
             {/* User Routes */}
             <Route path="/dashboard" element={<ProtectedRoute user={authState.user}><UserDashboard user={authState.user!} /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute user={authState.user}><ProfileSettings user={authState.user!} /></ProtectedRoute>} />
-
+            <Route path="/skills" element={<ProtectedRoute user={authState.user}><Skill user={authState.user!} /></ProtectedRoute>} />
+    
             {/* Admin Routes */}
             <Route path="/admin/lord" element={<ProtectedRoute user={authState.user} allowedRoles={[UserRole.ADMIN_LORD]}><AdminLord user={authState.user!} /></ProtectedRoute>} />
             <Route path="/admin/referral" element={<ProtectedRoute user={authState.user} allowedRoles={[UserRole.ADMIN_REFERRAL]}><AdminReferral user={authState.user!} /></ProtectedRoute>} />
