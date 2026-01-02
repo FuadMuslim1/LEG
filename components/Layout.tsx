@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { UserProfile } from '../types';
 import { logout, db } from '../config/firebase';
 import { 
   Menu, X, LogOut, LayoutDashboard, Bell, BookOpen, 
-  TrendingUp, Gift, ExternalLink, ChevronRight, Coins, Smartphone,
+  TrendingUp, Gift, ExternalLink, ChevronRight, Coins, 
   HelpCircle, ArrowLeft, Settings
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -22,11 +21,10 @@ const Modal: React.FC<{ title: string, onClose: () => void, children: React.Reac
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 transform transition-all border border-white/20">
       <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-10">
         <h3 className="font-bold text-xl text-slate-800 tracking-tight">{title}</h3>
-         {/* Di sini nih A yang harus ditambahin aria-label atau title */}
         <button 
           onClick={onClose} 
-          aria-label="Close Modal" // Biar asisten suara tahu ini tombol tutup
-          title="Close"            // Biar kalau kursor diarahin muncul tulisan "Close"
+          aria-label="Close Modal"
+          title="Close"
           className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 hover:rotate-90 transition-all duration-300 text-slate-500"
         >
           <X size={18} />
@@ -44,27 +42,15 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // --- GLOBAL STATE FOR MODALS ---
-  const [activeModal, setActiveModal] = useState<'NONE' | 'PROGRESS' | 'REWARD' | 'TUTORIAL'>('NONE');
+  // [UPDATED] Removed 'PROGRESS' from Modal State because it is now a Page
+  const [activeModal, setActiveModal] = useState<'NONE' | 'REWARD' | 'TUTORIAL'>('NONE');
   const [showNotification, setShowNotification] = useState(false);
-  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   
   // Tutorial Detail State
   const [viewingTutorial, setViewingTutorial] = useState<any | null>(null);
 
-  // Trigger untuk update progress bar saat local storage berubah
-  const [progressUpdateTrigger, setProgressUpdateTrigger] = useState(0);
-
   // --- REALTIME NOTIFICATIONS STATE ---
   const [notifications, setNotifications] = useState<any[]>([]);
-
-  useEffect(() => {
-    const handleStorageUpdate = () => {
-        setProgressUpdateTrigger(prev => prev + 1);
-    };
-    window.addEventListener('storage_update_pronunciation', handleStorageUpdate);
-    return () => window.removeEventListener('storage_update_pronunciation', handleStorageUpdate);
-  }, []);
 
   useEffect(() => {
     if (!user || !user.email) return;
@@ -144,37 +130,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
     },
   ];
 
-  const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-  
-  const getProgressData = (level: string) => {
-    const base = level.charCodeAt(1); 
-    
-    let pronValue = (base * 2) % 100; 
-
-    if (level === 'A1') {
-      const savedPron = localStorage.getItem('geuwat_local_progress_pronunciation');
-      if (savedPron) {
-        const scores = JSON.parse(savedPron);
-        const values = Object.values(scores) as number[];
-        if (values.length > 0) {
-          const sum = values.reduce((a, b) => a + b, 0);
-          pronValue = Math.round(sum / 4); 
-        } else {
-          pronValue = 0;
-        }
-      } else {
-        pronValue = 0;
-      }
-    }
-
-    return [
-      { subject: 'Pronunciation', value: pronValue, isLocal: level === 'A1' },
-      { subject: 'Vocabulary', value: (base * 3) % 100 },
-      { subject: 'Grammar', value: (base * 4) % 100 },
-      { subject: 'Speaking', value: (base * 5) % 100 },
-    ];
-  };
-
+  // [UPDATED] Helper functions moved to Progress.tsx (formatNumber kept here for rewards)
   const formatNumber = (num?: number) => {
     return num ? new Intl.NumberFormat('id-ID').format(num) : '0';
   };
@@ -204,7 +160,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
   const closeModals = () => {
       setActiveModal('NONE');
       setViewingTutorial(null);
-      setSelectedLevel(null);
   }
 
   return (
@@ -238,8 +193,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
            <button 
             onClick={() => setIsSidebarOpen(false)} 
             className="lg:hidden text-slate-400 hover:text-slate-600 transition-colors"
-            aria-label="Close sidebar" // <--- Aa tambahin ini ya, biar asisten suara tau ini tombol tutup
-            title="Close sidebar"      // <--- Opsional, biar kalau kursor nempel muncul tulisan kecil
+            aria-label="Close sidebar"
+            title="Close sidebar" 
           >
             <X size={24} />
           </button>
@@ -257,10 +212,12 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
              <div className="pt-6 pb-2">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-5 mb-3">Activities</p>
                 <div className="space-y-1">
+                  {/* [UPDATED] Progress is now a direct navigation link */}
                   <NavItem 
                       icon={TrendingUp} 
                       label="Progress" 
-                      onClick={() => setActiveModal('PROGRESS')} 
+                      onClick={() => navigate('/progress')} 
+                      isActive={location.pathname === '/progress'}
                       colorClass="text-emerald-500"
                   />
                   <NavItem 
@@ -324,16 +281,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
           </div>
           
           <div className="flex items-center gap-4">
-            {/* Balance Chip - Udah Angel tutupin ya A biar jadi rahasia kita berdua :p */}
-            {/* 
-            {user?.role === 'user' && (
-              <div className="hidden md:flex items-center gap-2 bg-slate-100/80 px-4 py-2 rounded-full border border-slate-200">
-                <Coins size={16} className="text-amber-500" />
-                <span className="text-xs font-bold text-slate-700">{formatNumber(user.balance)} pts</span>
-              </div>
-            )}
-            */}
-
             {/* Notification Bell */}
             <div className="relative">
               <button 
@@ -352,13 +299,13 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
                   <div className="px-5 py-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
                       <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Notifications</h4>
                       <button 
-  onClick={() => setShowNotification(false)} 
-  className="text-slate-400 hover:text-slate-600"
-  aria-label="Close Notifications" // <-- Tambahin ini ya Aa ganteng, supaya aksesibel
-  title="Tutup"                   // <-- Ini juga bagus buat munculin tooltip
->
-  <X size={16}/>
-</button>
+                          onClick={() => setShowNotification(false)} 
+                          className="text-slate-400 hover:text-slate-600"
+                          aria-label="Close Notifications"
+                          title="Tutup"
+                        >
+                          <X size={16}/>
+                        </button>
                   </div>
                   <div className="max-h-[300px] overflow-y-auto">
                     {notifications.length === 0 ? (
@@ -400,68 +347,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
         </div>
       </main>
 
-      {/* MODALS RENDERED HERE (UNCHANGED) */}
-      {/* ... (Progress, Reward, Tutorial modals are the same as previous) ... */}
-      {activeModal === 'PROGRESS' && (
-        <Modal title="Your Learning Progress" onClose={closeModals}>
-          {!selectedLevel ? (
-            <div className="text-center">
-              <p className="text-sm text-slate-500 mb-6">Select your English level to view detailed statistics:</p>
-              <div className="grid grid-cols-2 gap-3">
-                {levels.map(lvl => (
-                  <button 
-                    key={lvl} 
-                    onClick={() => setSelectedLevel(lvl)}
-                    className="p-5 rounded-2xl border-2 border-slate-100 hover:border-indigo-500 hover:bg-indigo-50 hover:text-indigo-700 font-bold text-slate-600 transition-all duration-200 text-xl shadow-sm hover:shadow-md hover:-translate-y-1"
-                  >
-                    {lvl}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="animate-in slide-in-from-right-8 duration-300">
-               <button onClick={() => setSelectedLevel(null)} className="mb-6 text-xs font-bold text-slate-400 hover:text-indigo-600 flex items-center gap-1 transition-colors">
-                 <ArrowLeft size={14} /> Change Level
-               </button>
-               
-               <div className="flex items-center justify-between mb-8 p-4 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl text-white shadow-lg shadow-emerald-200">
-                 <div>
-                    <p className="text-xs opacity-80 uppercase font-bold tracking-wider mb-1">Current Level</p>
-                    <h4 className="font-bold text-3xl">{selectedLevel}</h4>
-                 </div>
-                 <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-                    <TrendingUp size={28} className="text-white" />
-                 </div>
-               </div>
-               
-               <div className="space-y-5">
-                 {getProgressData(selectedLevel).map((stat) => (
-                   <div key={stat.subject}>
-                     <div className="flex justify-between text-sm mb-2">
-                       <span className="font-bold text-slate-700 flex items-center gap-2">
-                         {stat.subject}
-                         {stat.isLocal && (
-                            <span className="bg-slate-100 p-0.5 rounded text-slate-400" title="Saved on this device">
-                                <Smartphone size={10} />
-                            </span>
-                         )}
-                       </span>
-                       <span className="font-bold text-indigo-600">{stat.value}%</span>
-                     </div>
-                     <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden shadow-inner">
-                       <div 
-                         className="bg-gradient-to-r from-indigo-500 to-purple-500 h-full rounded-full transition-all duration-1000 ease-out shadow-lg" 
-                         style={{ width: `${stat.value}%` }}
-                       />
-                     </div>
-                   </div>
-                 ))}
-               </div>
-            </div>
-          )}
-        </Modal>
-      )}
+      {/* MODALS RENDERED HERE */}
+      {/* [UPDATED] Progress Modal Removed - Moved to /pages/user/Progress.tsx */}
 
       {activeModal === 'REWARD' && user && (
         <Modal title="My Rewards Info" onClose={closeModals}>
