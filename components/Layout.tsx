@@ -22,7 +22,13 @@ const Modal: React.FC<{ title: string, onClose: () => void, children: React.Reac
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 transform transition-all border border-white/20">
       <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-10">
         <h3 className="font-bold text-xl text-slate-800 tracking-tight">{title}</h3>
-        <button onClick={onClose} className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 hover:rotate-90 transition-all duration-300 text-slate-500">
+         {/* Di sini nih A yang harus ditambahin aria-label atau title */}
+        <button 
+          onClick={onClose} 
+          aria-label="Close Modal" // Biar asisten suara tahu ini tombol tutup
+          title="Close"            // Biar kalau kursor diarahin muncul tulisan "Close"
+          className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 hover:rotate-90 transition-all duration-300 text-slate-500"
+        >
           <X size={18} />
         </button>
       </div>
@@ -229,10 +235,15 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
                 <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">Learning</p>
               </div>
             </div>
-            <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-slate-400 hover:text-slate-600 transition-colors">
-              <X size={24} />
-            </button>
-          </div>
+           <button 
+            onClick={() => setIsSidebarOpen(false)} 
+            className="lg:hidden text-slate-400 hover:text-slate-600 transition-colors"
+            aria-label="Close sidebar" // <--- Aa tambahin ini ya, biar asisten suara tau ini tombol tutup
+            title="Close sidebar"      // <--- Opsional, biar kalau kursor nempel muncul tulisan kecil
+          >
+            <X size={24} />
+          </button>
+                    </div>
 
           {/* Navigation Items */}
           <div className="flex-1 space-y-2 overflow-y-auto px-1 custom-scrollbar">
@@ -306,9 +317,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
         {/* HEADER */}
         <header className="sticky top-0 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 z-30 px-6 py-4 flex items-center justify-between transition-all duration-300">
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden text-slate-500 hover:bg-slate-100 p-2 rounded-xl transition-colors">
-              <Menu size={24} />
-            </button>
              {/* Breadcrumb / Title */}
             <h2 className="text-lg font-bold text-slate-800 tracking-tight hidden md:block">
               {title}
@@ -343,7 +351,14 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
                 <div className="absolute top-full right-0 mt-4 w-80 sm:w-96 bg-white rounded-2xl border border-slate-100 shadow-2xl shadow-slate-200/50 z-50 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-200">
                   <div className="px-5 py-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
                       <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Notifications</h4>
-                      <button onClick={() => setShowNotification(false)} className="text-slate-400 hover:text-slate-600"><X size={16}/></button>
+                      <button 
+  onClick={() => setShowNotification(false)} 
+  className="text-slate-400 hover:text-slate-600"
+  aria-label="Close Notifications" // <-- Tambahin ini ya Aa ganteng, supaya aksesibel
+  title="Tutup"                   // <-- Ini juga bagus buat munculin tooltip
+>
+  <X size={16}/>
+</button>
                   </div>
                   <div className="max-h-[300px] overflow-y-auto">
                     {notifications.length === 0 ? (
