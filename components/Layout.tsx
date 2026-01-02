@@ -1,11 +1,10 @@
-// [UPDATED] components/Layout.tsx
 import React, { useState, useEffect } from 'react';
 import { UserProfile } from '../types';
 import { logout, db } from '../config/firebase';
 import { 
-  Menu, X, LogOut, LayoutDashboard, Bell, BookOpen, 
-  TrendingUp, Gift, ExternalLink, ChevronRight, Coins, 
-  HelpCircle, ArrowLeft, Settings
+  X, LogOut, LayoutDashboard, Bell, BookOpen, 
+  TrendingUp, Gift, ExternalLink, ChevronRight, 
+  Settings
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { collection, query, where, onSnapshot, limit } from 'firebase/firestore';
@@ -16,43 +15,16 @@ interface LayoutProps {
   title: string;
 }
 
-// Modern Modal Component (Masih dipakai untuk Tutorial)
-const Modal: React.FC<{ title: string, onClose: () => void, children: React.ReactNode }> = ({ title, onClose, children }) => (
-  <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-    <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 transform transition-all border border-white/20">
-      <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-10">
-        <h3 className="font-bold text-xl text-slate-800 tracking-tight">{title}</h3>
-        <button 
-          onClick={onClose} 
-          aria-label="Close Modal"
-          title="Close"
-          className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 hover:rotate-90 transition-all duration-300 text-slate-500"
-        >
-          <X size={18} />
-        </button>
-      </div>
-      <div className="p-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
-        {children}
-      </div>
-    </div>
-  </div>
-);
-
 export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // [UPDATED] Removed 'REWARD' from activeModal state
-  const [activeModal, setActiveModal] = useState<'NONE' | 'TUTORIAL'>('NONE');
+  // [CLEANUP] Tidak perlu lagi state activeModal untuk Tutorial
   const [showNotification, setShowNotification] = useState(false);
-  
-  // Tutorial Detail State
-  const [viewingTutorial, setViewingTutorial] = useState<any | null>(null);
-
-  // --- REALTIME NOTIFICATIONS STATE ---
   const [notifications, setNotifications] = useState<any[]>([]);
 
+  // --- LOGIKA NOTIFIKASI (TETAP SAMA) ---
   useEffect(() => {
     if (!user || !user.email) return;
 
@@ -96,7 +68,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
       const combined = [...rawBroadcasts, ...rawPersonals].sort((a, b) => {
           const tA = a.createdAt?.seconds || 0;
           const tB = b.createdAt?.seconds || 0;
-          return tB - tA; // Newest first
+          return tB - tA; 
       });
       setNotifications(combined);
   }, [rawBroadcasts, rawPersonals]);
@@ -106,31 +78,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
     navigate('/');
   };
 
-  const tutorialItems = [
-    { 
-        id: 1,
-        title: 'Cara Melihat Progress', 
-        desc: 'Klik menu "View Progress" lalu pilih level bahasa inggris Anda (A1-C2).',
-        steps: [
-            'Buka Sidebar (Menu kiri).',
-            'Klik menu "View Progress" (icon grafik).',
-            'Pilih Level Bahasa Inggris Anda.',
-            'Lihat grafik kemajuan belajar Anda.'
-        ]
-    },
-    { 
-        id: 2,
-        title: 'Cara Mengklaim Reward', 
-        desc: 'Kumpulkan poin dari latihan soal dan tukarkan di menu "Reward".',
-        steps: [
-            'Pastikan Anda sudah login dan memiliki poin.',
-            'Buka menu "Rewards" di sidebar.',
-            'Lihat total poin Anda.',
-            'Hubungi admin jika poin belum masuk.'
-        ]
-    },
-  ];
-
+  // Komponen Navigasi Kecil
   const NavItem = ({ icon: Icon, label, onClick, isActive, colorClass }: { icon: any, label: string, onClick: () => void, isActive?: boolean, colorClass?: string }) => {
     return (
       <button 
@@ -152,11 +100,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
       </button>
     );
   };
-
-  const closeModals = () => {
-      setActiveModal('NONE');
-      setViewingTutorial(null);
-  }
 
   return (
     <div className="min-h-screen bg-slate-50/50 flex font-sans selection:bg-indigo-100 selection:text-indigo-700">
@@ -194,7 +137,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
           >
             <X size={24} />
           </button>
-                    </div>
+          </div>
 
           {/* Navigation Items */}
           <div className="flex-1 space-y-2 overflow-y-auto px-1 custom-scrollbar">
@@ -215,7 +158,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
                       isActive={location.pathname === '/progress'}
                       colorClass="text-emerald-500"
                   />
-                  {/* [UPDATED] Reward is now a page navigation */}
                   <NavItem 
                       icon={Gift} 
                       label="Rewards" 
@@ -223,10 +165,12 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
                       isActive={location.pathname === '/reward'}
                       colorClass="text-amber-500"
                   />
+                  {/* [UPDATED] Tutorial sekarang pindah halaman, bukan setModal */}
                   <NavItem 
                       icon={BookOpen} 
                       label="Tutorial" 
-                      onClick={() => setActiveModal('TUTORIAL')} 
+                      onClick={() => navigate('/tutorial')} 
+                      isActive={location.pathname === '/tutorial'}
                       colorClass="text-blue-500"
                   />
                 </div>
@@ -343,70 +287,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
         </div>
       </main>
 
-      {/* MODALS AREA */}
-      {/* [UPDATED] Reward Modal Removed - Now uses /pages/user/Reward.tsx */}
-
-      {activeModal === 'TUTORIAL' && (
-        <Modal 
-            title={viewingTutorial ? viewingTutorial.title : "Help & Tutorials"} 
-            onClose={() => viewingTutorial ? setViewingTutorial(null) : closeModals()}
-        >
-          {!viewingTutorial ? (
-            <div className="space-y-3">
-                {tutorialItems.map((tut) => (
-                    <button 
-                        key={tut.id} 
-                        onClick={() => setViewingTutorial(tut)}
-                        className="w-full text-left bg-white border border-slate-200 p-5 rounded-2xl shadow-sm hover:border-indigo-500 hover:shadow-indigo-100 hover:shadow-lg transition-all group duration-300"
-                    >
-                        <h5 className="font-bold text-slate-800 flex items-center gap-2 mb-2 group-hover:text-indigo-600 transition-colors">
-                            <div className="p-1.5 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
-                                <BookOpen size={18} />
-                            </div>
-                            {tut.title}
-                        </h5>
-                        <p className="text-xs text-slate-500 leading-relaxed pl-9">
-                            {tut.desc}
-                        </p>
-                    </button>
-                ))}
-            </div>
-          ) : (
-            <div className="animate-in slide-in-from-right-8 duration-300">
-                <button onClick={() => setViewingTutorial(null)} className="mb-6 text-xs font-bold text-slate-400 hover:text-slate-600 flex items-center gap-1 transition-colors">
-                    <ArrowLeft size={14} /> Back to List
-                </button>
-                
-                <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm mb-4 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
-                    
-                    <h4 className="font-bold text-lg text-slate-800 mb-2 relative z-10">{viewingTutorial.title}</h4>
-                    <p className="text-sm text-slate-500 mb-6 relative z-10">{viewingTutorial.desc}</p>
-                    
-                    <div className="space-y-4 relative z-10">
-                        {viewingTutorial.steps?.map((step: string, idx: number) => (
-                            <div key={idx} className="flex gap-4 items-start">
-                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shadow-md shadow-indigo-200">
-                                    {idx + 1}
-                                </span>
-                                <span className="text-sm text-slate-600 font-medium pt-0.5">{step}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 flex gap-3 items-start">
-                    <div className="text-indigo-600 mt-0.5">
-                        <HelpCircle size={18} />
-                    </div>
-                    <p className="text-xs text-indigo-800 leading-relaxed">
-                        Jika Anda mengalami kendala teknis, silakan hubungi admin via WhatsApp untuk bantuan lebih lanjut.
-                    </p>
-                </div>
-            </div>
-          )}
-        </Modal>
-      )}
+      {/* [CLEANUP] Tidak ada lagi area Modal di sini, Layout jadi bersih! */}
 
     </div>
   );
