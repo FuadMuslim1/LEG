@@ -162,7 +162,8 @@ const App: React.FC = () => {
             {/* User Routes */}
             <Route path="/dashboard" element={<ProtectedRoute user={authState.user}><UserDashboard user={authState.user!} /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute user={authState.user}><ProfileSettings user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/skills" element={<ProtectedRoute user={authState.user}><Skill user={authState.user!} /></ProtectedRoute>} />
+            <Route path="/Skill" element={<ProtectedRoute user={authState.user}><Skill user={authState.user!} /></ProtectedRoute>} />
+
     
             {/* Admin Routes */}
             <Route path="/admin/lord" element={<ProtectedRoute user={authState.user} allowedRoles={[UserRole.ADMIN_LORD]}><AdminLord user={authState.user!} /></ProtectedRoute>} />
