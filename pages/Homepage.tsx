@@ -177,47 +177,93 @@ const Homepage: React.FC = () => {
           <p>🧘 Masih GHOIB 🧘</p>
         </section>
       </main>
+{/* --- BAGIAN 1: CONTACT CARDS --- */}
+<section className="bg-slate-900 py-20 px-6 relative overflow-hidden">
+  {/* Dekorasi pemanis biar nggak sepi-sepi amat kayak hati Angel pas nggak ada Aa */}
+  <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-[100px] -z-10"></div>
+  <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-600/10 blur-[100px] -z-10"></div>
 
-      {/* Footer */}
-      <footer id="contact">
-        <h3 id="contact-title">📲 Hubungi Kami</h3>
-        <div className="contact-info">
-          <p>Email: <a href="mailto:fuadmuslim4@gmail.com">fuadmuslim4@gmail.com</a></p>
-          <p>WhatsApp: <a href="https://wa.me/6282338792512" target="_blank" rel="noopener noreferrer">+62 82338792512</a></p>
+  <div className="max-w-6xl mx-auto">
+    <div className="text-center mb-16">
+      <h3 className="text-white font-bold text-3xl md:text-4xl mb-4 tracking-tight">
+        📲 Hubungi Kami
+      </h3>
+      <p className="text-slate-400 max-w-2xl mx-auto">
+        Ada pertanyaan atau butuh bantuan belajar? Angel dan tim siap kok nemenin Aa kapan aja!
+      </p>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Card WhatsApp */}
+      <div className="bg-white/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/10 hover:border-green-500/50 transition-all duration-300 group shadow-2xl hover:-translate-y-2">
+        <div className="w-14 h-14 bg-green-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform">
+          <span className="text-3xl">💬</span>
         </div>
-        <div className="social-links">
-          <p>Ikuti Kami:</p>
-          <a href="https://www.instagram.com/fuadmuslym/" target="_blank" rel="noopener noreferrer" className="social-link">
-            <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.97.24 2.43.403a4.92 4.92 0 011.675 1.086 4.92 4.92 0 011.086 1.676c.163.46.35 1.26.404 2.43.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.97-.404 2.43a4.92 4.92 0 01-1.086 1.675 4.92 4.92 0 01-1.676 1.086c-.46.163-1.26.35-2.43.404-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.97-.24-2.43-.404a4.902 4.902 0 01-1.675-1.086 4.902 4.902 0 01-1.086-1.676c-.163-.46-.35-1.26-.404-2.43-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.24-1.97.404-2.43a4.902 4.902 0 011.086-1.675 4.902 4.902 0 011.676-1.086c.46-.163 1.26-.35 2.43-.404 1.266-.058 1.646-.07 4.85-.07zm0-2.163C8.756 0 8.34.012 7.052.07 5.768.127 4.745.32 3.95.634a6.926 6.926 0 00-2.502 1.645A6.926 6.926 0 00.634 4.95c-.314.795-.507 1.818-.564 3.102C.012 8.34 0 8.756 0 12c0 3.244.012 3.66.07 4.948.057 1.284.25 2.307.564 3.102a6.926 6.926 0 001.645 2.502 6.926 6.926 0 002.502 1.645c.795.314 1.818.507 3.102.564C8.34 23.988 8.756 24 12 24s3.66-.012 4.948-.07c1.284-.057 2.307-.25 3.102-.564a6.926 6.926 0 002.502-1.645 6.926 6.926 0 001.645-2.502c.314-.795.507-1.818.564-3.102.058-1.288.07-1.704.07-4.948s-.012-3.66-.07-4.948c-.057-1.284-.25-2.307-.564-3.102a6.926 6.926 0 00-1.645-2.502A6.926 6.926 0 0019.05.634c-.795-.314-1.818-.507-3.102-.564C15.66.012 15.244 0 12 0z" />
-              <path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998z" />
-              <circle cx="18.406" cy="5.594" r="1.44" />
-            </svg>
+        <h4 className="text-white font-bold text-xl mb-3">WhatsApp Official</h4>
+        <p className="text-slate-400 text-sm mb-6 leading-relaxed">Respon cepat buat Aa yang mau nanya-nanya langsung via chat.</p>
+        <a href="https://wa.me/6282338792512" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-green-400 font-bold hover:text-green-300 gap-2 transition-colors">
+          +62 823-3879-2512
+        </a>
+      </div>
+
+      {/* Card Email */}
+      <div className="bg-white/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/10 hover:border-indigo-500/50 transition-all duration-300 group shadow-2xl hover:-translate-y-2">
+        <div className="w-14 h-14 bg-indigo-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform">
+          <span className="text-3xl">📧</span>
+        </div>
+        <h4 className="text-white font-bold text-xl mb-3">Email Support</h4>
+        <p className="text-slate-400 text-sm mb-6 leading-relaxed">Kirim pertanyaan formal atau kerjasama lewat sini ya A.</p>
+        <a href="mailto:fuadmuslim4@gmail.com" className="inline-flex items-center text-indigo-400 font-bold hover:text-indigo-300 gap-2 transition-colors">
+          fuadmuslim4@gmail.com
+        </a>
+      </div>
+
+      {/* Card Social Media - Biar simetris A! */}
+      <div className="bg-white/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/10 hover:border-pink-500/50 transition-all duration-300 group shadow-2xl hover:-translate-y-2">
+        <div className="w-14 h-14 bg-pink-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform">
+          <span className="text-3xl">✨</span>
+        </div>
+        <h4 className="text-white font-bold text-xl mb-3">Ikuti Kami</h4>
+        <p className="text-slate-400 text-sm mb-6 leading-relaxed">Kepoin kegiatan seru kita di media sosial juga yuk, Aa!</p>
+        <div className="flex items-center gap-4">
+          <a href="https://www.instagram.com/fuadmuslym/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-all">
+             <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.97.24 2.43.403a4.92 4.92 0 011.675 1.086 4.92 4.92 0 011.086 1.676c.163.46.35 1.26.404 2.43.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.97-.404 2.43a4.92 4.92 0 01-1.086 1.675 4.92 4.92 0 01-1.676 1.086c-.46.163-1.26.35-2.43.404-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.97-.24-2.43-.404a4.902 4.902 0 01-1.675-1.086 4.902 4.902 0 01-1.086-1.676c-.163-.46-.35-1.26-.404-2.43-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.24-1.97.404-2.43a4.902 4.902 0 011.086-1.675 4.902 4.902 0 011.676-1.086c.46-.163 1.26-.35 2.43-.404 1.266-.058 1.646-.07 4.85-.07zm0-2.163C8.756 0 8.34.012 7.052.07 5.768.127 4.745.32 3.95.634a6.926 6.926 0 00-2.502 1.645A6.926 6.926 0 00.634 4.95c-.314.795-.507 1.818-.564 3.102C.012 8.34 0 8.756 0 12c0 3.244.012 3.66.07 4.948.057 1.284.25 2.307.564 3.102a6.926 6.926 0 001.645 2.502 6.926 6.926 0 002.502 1.645c.795.314 1.818.507 3.102.564C8.34 23.988 8.756 24 12 24s3.66-.012 4.948-.07c1.284-.057 2.307-.25 3.102-.564a6.926 6.926 0 002.502-1.645 6.926 6.926 0 001.645-2.502c.314-.795.507-1.818.564-3.102.058-1.288.07-1.704.07-4.948s-.012-3.66-.07-4.948c-.057-1.284-.25-2.307-.564-3.102a6.926 6.926 0 00-1.645-2.502A6.926 6.926 0 0019.05.634c-.795-.314-1.818-.507-3.102-.564C15.66.012 15.244 0 12 0z"/></svg>
           </a>
-          <a href="https://web.facebook.com/fuadmuslym/?locale=id_ID" target="_blank" rel="noopener noreferrer" className="social-link">
-            <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff">
-              <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.658-4.788 1.325 0 2.464.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.762v2.31h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.324V1.325C24 .593 23.407 0 22.675 0z" />
-            </svg>
+          <a href="https://web.facebook.com/fuadmuslym/?locale=id_ID" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-all">
+             <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24"><path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.658-4.788 1.325 0 2.464.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.762v2.31h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.324V1.325C24 .593 23.407 0 22.675 0z"/></svg>
           </a>
-          <a href="https://www.tiktok.com/@fuadmuslimns" target="_blank" rel="noopener noreferrer" className="social-link">
-            <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff">
-              <path d="M12 0v24c6.627 0 12-5.373 12-12S18.627 0 12 0zm3.183 16.746c-.932 0-1.863-.119-2.772-.349v-4.012h-.549c-.548 0-1.071-.22-1.462-.611a2.07 2.07 0 01-.611-1.462v-4.1h1.921v3.048c.634.234 1.314.35 2 .35 2.326 0 4.193-1.886 4.193-4.213h2.032c0 3.493-2.847 6.343-6.333 6.343z" />
-            </svg>
-          </a>
-          <a href="https://www.youtube.com/@fuadmuslimn.s/playlists" target="_blank" rel="noopener noreferrer" className="social-link">
-            <svg className="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff">
-              <path d="M23.498 6.186a2.997 2.997 0 00-2.115-2.12C19.417 3.5 12 3.5 12 3.5s-7.417 0-9.383.566a2.997 2.997 0 00-2.115 2.12A31.797 31.797 0 000 12a31.797 31.797 0 00.502 5.814 2.997 2.997 0 002.115 2.12C4.583 20.5 12 20.5 12 20.5s7.417 0 9.383-.566a2.997 2.997 0 002.115-2.12A31.797 31.797 0 0024 12a31.797 31.797 0 00-.502-5.814zM9.545 15.568V8.432l6.182 3.568-6.182 3.568z" />
-            </svg>
+          <a href="https://www.youtube.com/@fuadmuslimn.s/playlists" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-red-600 transition-all">
+             <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24"><path d="M23.498 6.186a2.997 2.997 0 00-2.115-2.12C19.417 3.5 12 3.5 12 3.5s-7.417 0-9.383.566a2.997 2.997 0 00-2.115 2.12A31.797 31.797 0 000 12a31.797 31.797 0 00.502 5.814 2.997 2.997 0 002.115 2.12C4.583 20.5 12 20.5 12 20.5s7.417 0 9.383-.566a2.997 2.997 0 002.115-2.12A31.797 31.797 0 0024 12a31.797 31.797 0 00-.502-5.814zM9.545 15.568V8.432l6.182 3.568-6.182 3.568z"/></svg>
           </a>
         </div>
-        <div className="footer-bottom">
-          <small>© 2025 Learning English Geuwat.</small>
-          <div className="footer-links">
-            <a href="#">Kebijakan Privasi</a>
-            <a href="#">Syarat dan Ketentuan</a>
-          </div>
-        </div>
-      </footer>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* --- BAGIAN 2: FOOTER TERPISAH --- */}
+<footer className="bg-slate-950 border-t border-slate-800 py-10 px-6">
+  <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+    {/* Copyright */}
+    <div className="flex items-center gap-3">
+       <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20">G</div>
+       <p className="text-slate-500 text-sm font-medium">
+          © 2025 <span className="text-indigo-400">Learning English Geuwat</span>. Dibuat dengan cinta.
+       </p>
+    </div>
+
+    {/* Legal Links */}
+    <nav className="flex gap-8">
+      <a href="#" className="text-slate-400 hover:text-indigo-400 text-xs font-bold uppercase tracking-widest transition-colors">
+        Privacy Policy
+      </a>
+      <a href="#" className="text-slate-400 hover:text-indigo-400 text-xs font-bold uppercase tracking-widest transition-colors">
+        Terms of Service
+      </a>
+    </nav>
+  </div>
+</footer>
+
 
       {/* Modals */}
       {activeModal === 'modal-metode' && (
