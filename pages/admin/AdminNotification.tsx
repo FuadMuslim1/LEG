@@ -9,7 +9,7 @@ import {
 import { 
   collection, addDoc, serverTimestamp, query, orderBy, onSnapshot, deleteDoc, doc, writeBatch 
 } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../config/firebase';
 
 interface Props {
   user: UserProfile;

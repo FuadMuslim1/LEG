@@ -12,7 +12,7 @@ import {
   collection, getDocs, getDoc, doc, serverTimestamp, 
   query, orderBy, where, writeBatch, increment, deleteDoc 
 } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../config/firebase';
 import { utils, writeFile } from 'xlsx';
 
 interface Props {

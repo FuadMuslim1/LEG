@@ -11,7 +11,7 @@ import {
 import { 
   collection, query, getDocs, doc, setDoc, serverTimestamp, updateDoc, orderBy, limit, getDoc, addDoc, where, writeBatch, deleteDoc 
 } from 'firebase/firestore';
-import { db, registerUserByAdmin } from '../../firebase';
+import { db, registerUserByAdmin } from '../../config/firebase';
 
 interface Props {
   user: UserProfile;

@@ -6,7 +6,7 @@ import {
   Terminal, Save, Trash2, RefreshCw, AlertTriangle, Search
 } from 'lucide-react';
 import { collection, getDocs, doc, deleteDoc, updateDoc, query, limit } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../config/firebase';
 
 interface Props {
   user: UserProfile;
