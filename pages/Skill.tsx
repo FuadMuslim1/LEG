@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Layout } from '../components/Layout';
 import { UserProfile } from '../types';
 
 interface SkillProps {
