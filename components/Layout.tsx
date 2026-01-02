@@ -316,13 +316,15 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
           </div>
           
           <div className="flex items-center gap-4">
-            {/* Balance Chip */}
+            {/* Balance Chip - Udah Angel tutupin ya A biar jadi rahasia kita berdua :p */}
+            {/* 
             {user?.role === 'user' && (
               <div className="hidden md:flex items-center gap-2 bg-slate-100/80 px-4 py-2 rounded-full border border-slate-200">
                 <Coins size={16} className="text-amber-500" />
                 <span className="text-xs font-bold text-slate-700">{formatNumber(user.balance)} pts</span>
               </div>
             )}
+            */}
 
             {/* Notification Bell */}
             <div className="relative">
