@@ -1,3 +1,4 @@
+// [UPDATED] components/Layout.tsx
 import React, { useState, useEffect } from 'react';
 import { UserProfile } from '../types';
 import { logout, db } from '../config/firebase';
@@ -15,7 +16,7 @@ interface LayoutProps {
   title: string;
 }
 
-// Modern Modal Component
+// Modern Modal Component (Masih dipakai untuk Tutorial)
 const Modal: React.FC<{ title: string, onClose: () => void, children: React.ReactNode }> = ({ title, onClose, children }) => (
   <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 transform transition-all border border-white/20">
@@ -42,8 +43,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // [UPDATED] Removed 'PROGRESS' from Modal State because it is now a Page
-  const [activeModal, setActiveModal] = useState<'NONE' | 'REWARD' | 'TUTORIAL'>('NONE');
+  // [UPDATED] Removed 'REWARD' from activeModal state
+  const [activeModal, setActiveModal] = useState<'NONE' | 'TUTORIAL'>('NONE');
   const [showNotification, setShowNotification] = useState(false);
   
   // Tutorial Detail State
@@ -130,11 +131,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
     },
   ];
 
-  // [UPDATED] Helper functions moved to Progress.tsx (formatNumber kept here for rewards)
-  const formatNumber = (num?: number) => {
-    return num ? new Intl.NumberFormat('id-ID').format(num) : '0';
-  };
-
   const NavItem = ({ icon: Icon, label, onClick, isActive, colorClass }: { icon: any, label: string, onClick: () => void, isActive?: boolean, colorClass?: string }) => {
     return (
       <button 
@@ -212,7 +208,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
              <div className="pt-6 pb-2">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-5 mb-3">Activities</p>
                 <div className="space-y-1">
-                  {/* [UPDATED] Progress is now a direct navigation link */}
                   <NavItem 
                       icon={TrendingUp} 
                       label="Progress" 
@@ -220,10 +215,12 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
                       isActive={location.pathname === '/progress'}
                       colorClass="text-emerald-500"
                   />
+                  {/* [UPDATED] Reward is now a page navigation */}
                   <NavItem 
                       icon={Gift} 
                       label="Rewards" 
-                      onClick={() => setActiveModal('REWARD')} 
+                      onClick={() => navigate('/reward')} 
+                      isActive={location.pathname === '/reward'}
                       colorClass="text-amber-500"
                   />
                   <NavItem 
@@ -274,7 +271,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
         {/* HEADER */}
         <header className="sticky top-0 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 z-30 px-6 py-4 flex items-center justify-between transition-all duration-300">
           <div className="flex items-center gap-4">
-             {/* Breadcrumb / Title */}
             <h2 className="text-lg font-bold text-slate-800 tracking-tight hidden md:block">
               {title}
             </h2>
@@ -347,47 +343,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, title }) => {
         </div>
       </main>
 
-      {/* MODALS RENDERED HERE */}
-      {/* [UPDATED] Progress Modal Removed - Moved to /pages/user/Progress.tsx */}
-
-      {activeModal === 'REWARD' && user && (
-        <Modal title="My Rewards Info" onClose={closeModals}>
-           <div className="text-center py-2">
-             <div className="relative w-24 h-24 mx-auto mb-6">
-                 <div className="absolute inset-0 bg-amber-400 rounded-full blur-xl opacity-20 animate-pulse"></div>
-                 <div className="relative w-full h-full bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white shadow-xl shadow-amber-200 border-4 border-white">
-                    <Gift size={48} />
-                 </div>
-             </div>
-             
-             <div className="space-y-4">
-               <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Coins size={64} />
-                  </div>
-                  <div className="text-xs text-slate-400 uppercase font-bold tracking-widest mb-1">Referral Code</div>
-                  <div className="text-2xl font-mono font-bold text-indigo-600 tracking-wider select-all cursor-pointer hover:text-indigo-700 transition-colors">
-                    {user.referralCode || '-'}
-                  </div>
-               </div>
-               
-               <div className="grid grid-cols-2 gap-4">
-                 <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                    <div className="text-xs text-slate-400 uppercase font-bold tracking-wider mb-2">Current Level</div>
-                    <div className="text-lg font-bold text-slate-800">{user.level || 'Rookie'}</div>
-                 </div>
-                 <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                    <div className="text-xs text-slate-400 uppercase font-bold tracking-wider mb-2">Balance</div>
-                    <div className="text-lg font-bold text-amber-600 flex items-center justify-center gap-1">
-                      <Coins size={18} className="fill-amber-600 stroke-amber-700" /> 
-                      {formatNumber(user.balance)}
-                    </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-        </Modal>
-      )}
+      {/* MODALS AREA */}
+      {/* [UPDATED] Reward Modal Removed - Now uses /pages/user/Reward.tsx */}
 
       {activeModal === 'TUTORIAL' && (
         <Modal 

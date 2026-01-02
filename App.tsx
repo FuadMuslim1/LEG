@@ -22,6 +22,7 @@ const AdminNotification = React.lazy(() => import('./pages/admin/AdminNotificati
 const AdminLord = React.lazy(() => import('./pages/admin/AdminLord').then(m => ({ default: m.AdminLord })));
 const Skill = React.lazy(() => import('./pages/Skill').then(m => ({ default: m.Skill })));
 const Progress = React.lazy(() => import('./pages/user/Progress').then(m => ({ default: m.Progress })));    
+const Reward = React.lazy(() => import('./pages/user/Reward').then(m => ({ default: m.Reward })));
 
 const getHomeRoute = (role: UserRole) => {
   switch (role) {
@@ -162,9 +163,9 @@ const App: React.FC = () => {
             {/* User Routes */}
             <Route path="/dashboard" element={<ProtectedRoute user={authState.user}><UserDashboard user={authState.user!} /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute user={authState.user}><ProfileSettings user={authState.user!} /></ProtectedRoute>} />
-            <Route path="/Skill" element={<ProtectedRoute user={authState.user}><Skill user={authState.user!} /></ProtectedRoute>} />
+            <Route path="/skill" element={<ProtectedRoute user={authState.user}><Skill user={authState.user!} /></ProtectedRoute>} />
             <Route path="/progress" element={<ProtectedRoute user={authState.user}><Progress user={authState.user!} /></ProtectedRoute>} />
-
+            <Route path="/reward" element={<ProtectedRoute user={authState.user}><Reward user={authState.user!} /></ProtectedRoute>} />
     
             {/* Admin Routes */}
             <Route path="/admin/lord" element={<ProtectedRoute user={authState.user} allowedRoles={[UserRole.ADMIN_LORD]}><AdminLord user={authState.user!} /></ProtectedRoute>} />
